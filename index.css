@@ -1,0 +1,16 @@
+html {
+  background-color: #DDE9F5;
+}
+
+.algopresent {
+  border: .25vw solid #333333;
+  box-shadow: .25vw .25vw;
+  float: left;
+  margin-left: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+span {
+  font-size: 24px;
+}

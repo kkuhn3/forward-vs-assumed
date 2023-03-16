@@ -1,0 +1,114 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<script src="constants.js"></script>
+		<script src="random.js"></script>
+		<script src="forward.js"></script>
+		<script src="assumed.js"></script>
+		<title>Forward v Assumed</title>
+	</head>
+	<body>
+		<div class="algopresent" id="random">
+			<span>
+				Pure Random
+			</span>
+			<div id="randomResults">
+			</div>
+		</div>
+		<div class="algopresent" id="forward-random">
+			<span>
+				Forward Random
+			</span>
+			<div id="forwardRandomResults">
+			</div>
+		</div>
+		<div class="algopresent" id="forward-smart">
+			<span>
+				Forward Priority
+			</span>
+			<div id="forwardSmartResults">
+			</div>
+		</div>
+		<div class="algopresent" id="forward-batch">
+			<span>
+				Forward Batch
+			</span>
+			<div id="forwardBatchResults">
+			</div>
+		</div>
+		<div class="algopresent" id="assumed-random">
+			<span>
+				Assumed Random
+			</span>
+			<div id="assumedRandomResults">
+			</div>
+		</div>
+		<div class="algopresent" id="assumed-smart">
+			<span>
+				Assumed Priority
+			</span>
+			<div id="assumedSmartResults">
+			</div>
+		</div>
+	</body>
+	<script>
+		function addToResults(keyArray, results) {
+			if(results[keyArray]) {
+				results[keyArray]++;
+			}
+			else {
+				results[keyArray] = 1;
+			}
+		}
+
+		function showResults(resultsObject, koCount, divName) {
+			let numericalResults = Object.values(resultsObject);
+			numericalResults.sort((a, b) => a - b)
+			let median = 0;
+			if(numericalResults.length%2 != 0){
+				let middleIndex = Math.floor(numericalResults.length/2)
+				median = numericalResults[middleIndex]
+			}else{
+				let middleIndex = Math.floor(numericalResults.length/2)
+				median = (numericalResults[middleIndex] + numericalResults[middleIndex - 1])/2
+			}
+			const n = numericalResults.length;
+			const sum = numericalResults.reduce((a, b) => a + b, 0);
+			const mean = sum / n;
+			const sd = Math.sqrt(numericalResults.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
+			let sumAB = 0;
+			document.getElementById(divName).innerHTML += "------------Results-------------<br>";
+			Object.keys(resultsObject).sort().forEach(function(v, i) {
+				document.getElementById(divName).innerHTML += v + ": " + resultsObject[v] + "<br>";
+				if((v[0] === "A" && v[2] === "B") || (v[0] === "B" && v[2] === "A")) {
+					sumAB = sumAB + resultsObject[v];
+				}
+			});
+			document.getElementById(divName).innerHTML += "-------------Maths--------------<br>";
+			document.getElementById(divName).innerHTML += "KO: " + koCount + "<br>";
+			document.getElementById(divName).innerHTML += "Mean: " + Math.round(mean) + "<br>";
+			document.getElementById(divName).innerHTML += "Median: " + Math.round(median) + "<br>";
+			document.getElementById(divName).innerHTML += "Standard Deviation: " + Math.round(sd) + "<br>";
+			document.getElementById(divName).innerHTML += "AB clump Percent: " + Math.round(100 * sumAB / sum);
+		}
+
+		function runAnAlg(fun, divName) {
+			let results = {};
+			let kos = 0;
+			for(let i = 0; i < 9600; i++) { //chrome max callback is 10402
+				let output = fun();
+				addToResults(output[0], results);
+				kos = kos + output[1];
+			}
+			showResults(results, kos, divName);
+		}
+
+		runAnAlg(runRandom, "randomResults");
+		runAnAlg(runForwardRandom, "forwardRandomResults");
+		runAnAlg(runForwardSmart, "forwardSmartResults");
+		runAnAlg(runFowardBatch, "forwardBatchResults");
+		runAnAlg(runAssumedRandom, "assumedRandomResults");
+		runAnAlg(runAssumedSmart, "assumedSmartResults");
+
+	</script>
+</html>
