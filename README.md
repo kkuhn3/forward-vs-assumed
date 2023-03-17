@@ -16,8 +16,8 @@ Has the most even spread (because random)
 
 ## Off Random
 puts keys in random rooms that are not locked by said key, then checks if all rooms are sccessaable. If not, it tries again.
-KOs about 11% of the time 
-Has a spread, and since we need to check for completion everytime anyway - it's probably worse than random.
+KOs about 23% of the time 
+Has the same spread as random (because it effectively is), but since it calls for a valid check each time just like random, random is probably better in most cases, depending on how complex the graph is.
 
 ## Forward Random
 puts a random key in a reachable room, then repeats until it runs out of rooms or keys. If it runs out of rooms, it KOs and tries again. If it runs out of keys, it returns as successful.
@@ -46,3 +46,8 @@ Has a bad spread. This logic is the most likely to clump keys, and to result in 
 
 ## Conclusion
 This graph is too simple to show meaningful distinctions. Pure random has the best spread, and the highest KO rate. This makes it good for simple graphs, but likely problematic for larger graphs. Forward Random and Assumed Random are similar, against small graphs Forward Random results in lower devation, but KOs more often. Forward Priority and Assumed Priority both have the same issues. That is, a high standard deviation and resulting in the "same" outcoming more often than not. Assumed Priority has the worst overall results. However, both priority fills never KO! Forward Batch is an interesting case I'd like to explore more on a larger graph. It preforms as well as pure random, but never KOs.
+Random, Off Random, and Forward Batch all have the same spread, and forward batch cannot KO and could be built iteratively. I expect Forward Batch to become less stable once trees have crossing branches.
+
+## Charting out the options
+This graph is simple enough where it can be done by hand. I attempted this here:
+https://docs.google.com/spreadsheets/d/1ktKZdsnIBAta2DPf4iG_sE10mH6mA03zZ1NrxXo7kqI/edit?usp=sharing

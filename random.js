@@ -46,6 +46,12 @@ function runOffRandom() {
 
 			const bannedRooms = Object.keys(requirements).filter(room => requirements[room] === randomKey);
 			const possibleRooms = getPossibleLocations(Object.keys(mapOfKeys), bannedRooms);
+			if(possibleRooms.length < 1) {
+				keysCopy = [...keys];
+				mapOfKeys = {};
+				ko++
+				continue;
+			}
 			const randomRoom = possibleRooms[Math.floor(Math.random() * possibleRooms.length)];
 			mapOfKeys[randomRoom] = randomKey;
 		}
