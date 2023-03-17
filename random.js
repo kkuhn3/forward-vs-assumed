@@ -24,3 +24,35 @@ function shuffle(array) {
 	}
 	return array;
 }
+
+function getPossibleLocations(usedRooms, bannedRooms) {
+	return roomsStr.filter( x => !usedRooms.includes(x) && !bannedRooms.includes(x) );
+}
+
+function runOffRandom() {
+	let mapOfKeys = {};
+	let isValid = false;
+	let ko = -1;
+	let resultArr = [];
+	while(!isValid) {
+		ko++;
+		resultArr = [];
+		mapOfKeys = {};
+		let keysCopy = [...keys];
+		while (keysCopy.length > 0) {
+			const randomKeyIndex = Math.floor(Math.random() * keysCopy.length);
+			const randomKey = keysCopy[randomKeyIndex];
+			keysCopy.splice(randomKeyIndex, 1);
+
+			const bannedRooms = Object.keys(requirements).filter(room => requirements[room] === randomKey);
+			const possibleRooms = getPossibleLocations(Object.keys(mapOfKeys), bannedRooms);
+			const randomRoom = possibleRooms[Math.floor(Math.random() * possibleRooms.length)];
+			mapOfKeys[randomRoom] = randomKey;
+		}
+		Object.keys(mapOfKeys).sort().forEach(function(v, i) {
+			resultArr.push(mapOfKeys[v]);
+		});
+		isValid = checkValid(resultArr);
+	}
+	return [resultArr, ko];
+}

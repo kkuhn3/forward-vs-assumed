@@ -14,6 +14,11 @@ puts keys in random rooms, then checks if all rooms are accessable. If not, it t
 KOs (IE - tries again) 50% of the time, becuase there are 24 total possiblities (4x3x2x1) and only 12 completable set ups
 Has the most even spread (because random)
 
+## Off Random
+puts keys in random rooms that are not locked by said key, then checks if all rooms are sccessaable. If not, it tries again.
+KOs about 11% of the time 
+Has a spread, and since we need to check for completion everytime anyway - it's probably worse than random.
+
 ## Forward Random
 puts a random key in a reachable room, then repeats until it runs out of rooms or keys. If it runs out of rooms, it KOs and tries again. If it runs out of keys, it returns as successful.
 KOs 50% of the time, this is less obvious... but markable with a large logic graph. 
